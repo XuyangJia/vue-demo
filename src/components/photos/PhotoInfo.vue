@@ -9,9 +9,14 @@
     <hr>
 
     <!-- 缩略图区域 -->
-    <div class="thumbs">
-      <img class="preview-img" v-for="(item, index) in list" :src="item.src" height="100" @click="$preview.open(index, list)" :key="item.src">
-    </div>
+      <vue-preview
+      :list="list"
+      :thumbImageStyle="{width: '80px', height: '80px', margin: '10px', 'box-shadow':' 0 0 8px #999'}"
+      :previewBoxStyle="{border: '1px solid #eee'}"
+      :tapToClose="true"
+      @close="closeHandler"
+      @destroy="destroyHandler"
+    />
 
     <!-- 图片内容区域 -->
     <div class="content" v-html="photoinfo.content"></div>
@@ -54,11 +59,18 @@ export default {
           result.body.message.forEach(item => {
             item.w = 600;
             item.h = 400;
+            item.msrc = item.src;
           });
           // 把完整的数据保存到 list 中
           this.list = result.body.message;
         }
       });
+    },closeHandler() {
+      console.log('closeHandler')
+    },
+    // 完全关闭之后，调用这个函数清理资源
+    destroyHandler() {
+      console.log('destroyHandler')
     }
   },
   components: {
@@ -86,13 +98,6 @@ export default {
   .content {
     font-size: 13px;
     line-height: 30px;
-  }
-
-  .thumbs{
-    img{
-      margin: 10px;
-      box-shadow: 0 0 8px #999;
-    }
   }
 }
 </style>

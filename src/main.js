@@ -41,7 +41,7 @@ import 'mint-ui/lib/style.css'
 
 
 // 安装 图片预览插件
-import VuePreview from 'vue-preview'
+import VuePreview from 'vue2-preview'
 Vue.use(VuePreview)
 
 
