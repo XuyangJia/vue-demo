@@ -10,6 +10,7 @@ import './lib/mui/css/icons-extra.css'
 Vue.use(VueRouter)
 Vue.use(VueResource)
 Vue.http.options.root = 'http://www.liulongbin.top:3005/api'
+Vue.http.options.emulateJSON = true
 Vue.component(Header.name, Header)
 Vue.component(Swipe.name, Swipe)
 Vue.component(SwipeItem.name, SwipeItem)
