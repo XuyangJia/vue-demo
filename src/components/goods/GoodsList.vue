@@ -1,6 +1,6 @@
 <template>
   <div class="goods-list">
-    <div v-for="item in goodsList" :key="item.id" class="goods-item">
+    <div v-for="item in goodsList" :key="item.id" class="goods-item" @click="getDetail(item.id)">
       <img :src="item.img_url">
       <h1 class="title">{{ item.title }}</h1>
       <div class="info">
@@ -31,10 +31,13 @@ export default {
           this.goodsList = result.body.message;
         }
       });
+    },
+    getDetail(id) {
+    this.$router.push('/home/goodsinfo/' + id)
     }
   },
   created() {
-    this.getGoods(1)
+    this.getGoods(1);
   }
 };
 </script>

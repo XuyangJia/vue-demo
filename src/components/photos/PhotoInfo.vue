@@ -9,7 +9,7 @@
     <hr>
 
     <!-- 缩略图区域 -->
-      <vue-preview
+    <vue-preview
       :list="list"
       :thumbImageStyle="{width: '80px', height: '80px', margin: '10px', 'box-shadow':' 0 0 8px #999'}"
       :previewBoxStyle="{border: '1px solid #eee'}"
@@ -65,12 +65,13 @@ export default {
           this.list = result.body.message;
         }
       });
-    },closeHandler() {
-      console.log('closeHandler')
+    },
+    closeHandler() {
+      console.log("closeHandler");
     },
     // 完全关闭之后，调用这个函数清理资源
     destroyHandler() {
-      console.log('destroyHandler')
+      console.log("destroyHandler");
     }
   },
   components: {
