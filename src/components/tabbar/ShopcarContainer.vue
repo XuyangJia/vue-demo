@@ -1,6 +1,21 @@
 <template>
   <div>
-    <h3>ShopcarContainer</h3>
+    <div class="goods-list">
+      <div class="mui-card">
+        <div class="mui-card-content">
+          <div class="mui-card-content-inner">
+            <h3>2333</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="mui-card">
+        <div class="mui-card-content">
+          <div class="mui-card-content-inner">
+            <h3>2333</h3>
+          </div>
+        </div>
+      </div>
   </div>
 </template>
 

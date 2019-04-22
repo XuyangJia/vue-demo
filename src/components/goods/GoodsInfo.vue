@@ -1,7 +1,7 @@
 <template>
   <div class="goodsinfo-contsiner">
-    <transition>
-      <div class="ball"></div>
+    <transition @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
+      <div class="ball" v-show="ballFlag" ref="ball"></div>
     </transition>
     <div class="mui-card">
       <div class="mui-card-content">
@@ -17,11 +17,11 @@
           <p class="price">
             市场价：
             <del>￥{{ info.market_price }}</del>&nbsp;&nbsp;销售价：
-            <span class="now_price">￥{{ }}</span>
+            <span class="now_price">￥{{ info.sell_price }}</span>
           </p>
           <p>
             购买数量：
-            <numbox></numbox>
+            <numbox ref="numBox" @getcount="getSelectedCount" :max="info.stock_quantity"></numbox>
           </p>
           <div>
             <mt-button type="primary">立即购买</mt-button>
@@ -56,7 +56,9 @@ export default {
     return {
       id: this.$route.params.id,
       imgs: [],
-      info: {}
+      info: {},
+      ballFlag: false,
+      selectedCount: 1
     };
   },
   methods: {
@@ -85,7 +87,34 @@ export default {
     goComment() {
       this.$router.push({ name: "goodscomment", params: { id: this.id } });
     },
-    addToShopCar() {}
+    addToShopCar() {
+      this.ballFlag = !this.ballFlag;
+      const goodsData = {id: this.id, count: this.selectedCount, price: this.info.sell_price, selected: true}
+      this.$store.commit('addToCar', goodsData)
+    },
+    beforeEnter(el) {
+      el.style.transform = "translate(0, 0)"
+    },
+    enter(el, done) {
+      el.offsetWidth;
+      const numBoxPos = this.$refs.numBox.$el.getBoundingClientRect()
+      const badgePos = document.getElementById('shopCarBadge').getBoundingClientRect()
+      const offsetX = badgePos.x - numBoxPos.x - numBoxPos.width * 0.5
+      const offsetY = badgePos.y - numBoxPos.y - numBoxPos.height * 0.5
+      const ball = this.$refs.ball
+      ball.style.left = (numBoxPos.x + numBoxPos.width * 0.5) + 'px';
+      ball.style.top = (numBoxPos.y + numBoxPos.height * 0.5) + 'px';
+      
+      el.style.transform = `translate(${offsetX}px, ${offsetY}px)`
+      el.style.transition = 'all 0.6s cubic-bezier(.41,-0.5,.46,.97)'
+      done()
+    },
+    afterEnter(el) {
+      this.ballFlag = !this.ballFlag;
+    },
+    getSelectedCount(count) {
+      this.selectedCount = count
+    }
   },
   components: {
     swiper,
@@ -116,8 +145,8 @@ export default {
     }
   }
   .ball {
-    width: 15px;
-    height: 15px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     background-color: #f00;
     position: absolute;

@@ -2,8 +2,32 @@
 import Vue from 'vue'
 // 1.1 导入路由的包
 import VueRouter from 'vue-router'
+import Vuex from 'vuex'
 // 1.2 安装路由
 Vue.use(VueRouter)
+Vue.use(Vuex)
+const car = JSON.parse(localStorage.getItem('car') || '[]')
+const store = new Vuex.Store({
+  state: {
+    car
+  },
+  mutations: {
+    addToCar(state, goodsData) {
+      const goods = state.car.find(item => item.id === goodsData.id)
+      if (goods) {
+        goods.count += parseInt(goodsData.count)
+      } else {
+        state.car.push(goodsData)
+      }
+      localStorage.setItem('car', JSON.stringify(state.car))
+    }
+  },
+  getters: {
+    getAllCount(state) {
+      return state.car.reduce((accumulator, currentValue) => accumulator + currentValue.count, 0 )
+    }
+  }
+})
 
 // 导入格式化时间的插件
 import moment from 'moment'
@@ -55,5 +79,6 @@ import app from './App.vue'
 var vm = new Vue({
   el: '#app',
   render: c => c(app),
-  router // 1.4 挂载路由对象到 VM 实例上
+  router, // 1.4 挂载路由对象到 VM 实例上
+  store
 })
